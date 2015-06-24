@@ -1,0 +1,7 @@
+soundboard/
+*.ogg
+*.sh
+ttsengines/
+*.pem
+*.key
+config/
