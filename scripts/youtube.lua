@@ -14,13 +14,14 @@ local function getDuration(stamp)
 end
 
 local function youtube( channel, u )
-	local req = https.request(("https://www.googleapis.com/youtube/v3/videos?key=%spart=statistics,snippet,contentDetails&id=%s"):format(config.youtube.apiKey, id))
+	local req = https.request(("https://www.googleapis.com/youtube/v3/videos?key=%s&part=statistics,snippet,contentDetails&id=%s"):format(config.youtube.apiKey, id))
 	if not req then print(err) return end
 	if( #req == 0 ) then return end
 
 	local js = json.decode( req )
 
-	local items = js.items[1]
+	local items = js.items
+
 	if not items then return "Private or Invalid YouTube video." end
 
 	return ([[

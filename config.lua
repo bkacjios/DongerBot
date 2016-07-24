@@ -20,11 +20,11 @@ config = {
 	-- Users who have advanced command access
 	masters = {
 		["b304c9259eca9d38abb8cebd242b4609be2f972e"] = true,	-- Bkacjios
-		["14375fa14fb1c2f7d2b6a1a40302613fc2211d5a"] = true,	-- Somepotato
+		["64f59879ea4e10658fd01a0592c7d6ebbf20a443"] = true,	-- Orange-Tang
 	},
 
 	-- The default channel for the bot
-	home = "Private Channels/The lair of the DONGER",
+	home = "DongerBots Chamber of sentience learning",
 
 	youtube = {
 		-- A youtube api key
@@ -35,9 +35,25 @@ config = {
 
 		-- Users who should be prevented from adding youtube audio tracks
 		banned = {
-		    ["ace706de79dba0218df641ff44499ea5bd0331ad"] = true,
-		    ["0e6c40ace9f615de8cc9078c9faa1c344f4065bb"] = true,
-		    ["702c2067c4fff9b209f8ab3020712312ce1753fb"] = true,
-		}
+		},
+
+		userSTFU = true,
+	},
+
+	afk = {
+		-- Check every second
+		checktime = 1,
+
+		-- Number of minutes before the movetime a user will be warned
+		warning = 10,
+
+		-- Message to send users
+		warningmessage = "You have been idle for %i minutes..</br>You will be moved to <i>%s</i> in %i minutes!",
+
+		-- Number of minutes before declaring a user AFK
+		movetime = 90,
+
+		-- Channel to move idle users to
+		channel = "Wee Willy Winkys Magical Bed of Sleep Town",
 	}
 }

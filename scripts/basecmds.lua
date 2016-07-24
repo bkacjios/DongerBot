@@ -14,7 +14,7 @@ command.Add("volume", function(ply, args)
         volume = tonumber(volume)/100
         if not ply:isMaster() then volume = math.min(volume,1) end
         piepan.Audio.setVolume(volume)
-        print(("%s changed the volume to %i"):format(ply.name, volume*100))
+        print(("[COMMAND] %s: changed the volume to %i"):format(ply.name, volume*100))
     else
     	ply:send(("Volume is currently at %i"):format(piepan.Audio.getVolume()*100))
     end
@@ -25,8 +25,10 @@ command.Add( "goto", function( ply, args )
 	local user = piepan.users[args[1]]
 	if user then -- Default to a user
 		piepan.me:moveTo(user.channel)
+		print(("[COMMAND] %s: sent me to %s"):format(ply.name, user.name))
 	elseif channel then -- Fallback on a channel name
 		piepan.me:moveTo(channel)
+		print(("[COMMAND] %s: sent me to %s"):format(ply.name, user.channel.name))
 	else
 		ply:send("Unable to find a target to go to.")
 	end
@@ -40,7 +42,7 @@ command.Add( "summon", function( ply, args )
 		else
 			ply:send(("I'm comming %s!"):format(config.mastername))
 			piepan.me:moveTo(ply.channel)
-			print(("%s summoned me to %s"):format(ply.name, ply.channel.name))
+			print(("[COMMAND] %s: summoned me to %s"):format(ply.name, ply.channel.name))
 		end
 	else
 		local leashed, with = amIWithAMaster()
@@ -48,7 +50,7 @@ command.Add( "summon", function( ply, args )
 			ply:send(("I am already with my %s%s %s"):format(config.mastername, (#with>1 and "s: " or " "), table.concat(with, ", ")))
 		else
 			piepan.me:moveTo(ply.channel)
-			print(("%s summoned me to %s"):format(ply.name, ply.channel.name))
+			print(("[COMMAND] %s: summoned me to %s"):format(ply.name, ply.channel.name))
 		end
 	end
 end, "Make the bot come to the channel you are in" )
@@ -59,7 +61,7 @@ command.Add( "fuckoff", function( ply, args )
 		ply:send(("I won't leave my %s%s %s"):format(config.mastername, (#with>1 and "s: " or " "), table.concat(with, ", ")))
 	else
 		piepan.me:moveTo(piepan.channels(config.home))
-		print(("%s told me to fuck off"):format(ply.name))
+		print(("[COMMAND] %s: told me to fuck off"):format(ply.name))
 	end
 end, "Make the bot go to his channel" )
 

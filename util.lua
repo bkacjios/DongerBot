@@ -19,9 +19,9 @@ function autoreload.poll()
 			autoreload.monitoring[ k ] = mod
 			local succ, err = pcall(loadfile(k))
 			if not succ then
-				print( ("File reload (%s) FAILED: %q"):format(k, err) )
+				print( ("[RELOAD] %s: FAILED: %q"):format(k, err) )
 			else
-				print( ("File reload (%s) SUCCESS"):format(k) )
+				print( ("[RELOAD] %s: SUCCESS"):format(k) )
 			end
 		end
 	end
@@ -33,8 +33,8 @@ function autoreload.watch(f)
 end
 
 function include(f)
-	dofile(f)
 	autoreload.watch(f)
+	dofile(f)
 end
 
 function includeDir(directory)
@@ -42,7 +42,7 @@ function includeDir(directory)
 		if file ~= '.' and file ~= '..' then
 			local mode = lfs.attributes(directory .. file, "mode")
 			if mode == 'file' then
-				print(directory .. file)
+				print(("[INITIALIZE] %s"):format(directory .. file))
 				include(directory .. file)
 			end
 		end

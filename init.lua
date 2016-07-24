@@ -1,16 +1,10 @@
-if not client then -- Allows this file to be auto-reloaded successfully
-	client = _G.client
-else
-	_G.client = client
-end
-
 dofile("util.lua")
 dofile("config.lua")
 autoreload.watch("init.lua")
 autoreload.watch("util.lua")
 autoreload.watch("config.lua")
 
-function client.onConnect()
+function piepan.onConnect()
 	if (piepan.me.userId and piepan.me.userId <= 0) or not piepan.me.userId then
 		piepan.me:register() -- Attempt to register itself
 	end
@@ -26,26 +20,39 @@ function client.onConnect()
 	hook.Run('OnConnect')
 end
 
-function client.onDisconnect()
+function piepan.onDisconnect()
 	hook.Run('OnDisconnect')
 end
 
-function client.onMessage(...)
-	hook.Run('OnMessage', ...)
+function piepan.onMessage(message)
+	hook.Run('OnMessage', message)
 end
 
-function client.onUserChange(...)
-	hook.Run('OnUserChange', ...)
+function piepan.onUserChange(event)
+	hook.Run('OnUserChange', event)
+	if event.isConnected then
+		hook.Run('OnUserConnected', event)
+	elseif event.isDisconnected then
+		hook.Run('OnUserDisconnected', event)
+	elseif event.isChangedChannel then
+		hook.Run('OnUserChangedChannel', event)
+	elseif event.isChangedComment then
+		hook.Run('OnUserChangedComment', event)
+	end
 end
 
-function client.onChannelChange(...)
-	hook.Run('OnChannelChange', ...)
+function piepan.onChannelChange(event)
+	hook.Run('OnChannelChange', event)
 end
 
-function client.onPermissionDenied(...)
-	hook.Run('OnPermissionDenied', ...)
+function piepan.onPermissionDenied(event)
+	hook.Run('OnPermissionDenied', event)
 end
 
-function client.onAudioFinished()
+function piepan.onUserStats(...)
+	hook.Run('OnUserStats', ...)
+end
+
+function piepan.onAudioFinished()
 	hook.Run('OnAudioFinished')
 end

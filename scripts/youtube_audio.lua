@@ -1,4 +1,4 @@
-youtube = youtube or {
+youtube = {
     Directory = "youtube/",
     Queue = {},
     Playing = false,

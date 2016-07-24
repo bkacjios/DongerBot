@@ -1,4 +1,4 @@
-tts = tts or {
+tts = {
 	Directory = "ttsengines/",
 	Engine = "dectalk",
 	File = "tts.txt",
@@ -12,6 +12,8 @@ local function speakFileThread()
 end
 
 function tts.speak(txt)
+	do return end
+
 	if piepan.Audio.isPlaying() then
 		return
 	end

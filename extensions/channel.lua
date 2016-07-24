@@ -22,7 +22,7 @@ hook.Add("OnUserChange", "Channel Tracker", function(event)
 		if event.user ~= piepan.me then
 			if event.user.channel == piepan.me.channel then
 				hook.Run("OnUserEnteredChannel", event)
-			else
+			elseif event.channelFrom == piepan.me.channel then
 				hook.Run("OnUserLeftChannel", event)
 			end
 		end

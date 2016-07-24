@@ -5,3 +5,4 @@ ttsengines/
 *.pem
 *.key
 config/
+scripts/twitch.lua
