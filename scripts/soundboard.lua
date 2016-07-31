@@ -1,6 +1,7 @@
 soundboard = {
 	directory = "soundboard/",
 	sounds = {},
+	encoder = mumble.encoder(),
 }
 
 function soundboard.reload()
@@ -19,7 +20,7 @@ function soundboard.reload()
 			end
 		end
 	end
-	print("[SOUNDBOARD] Loaded audio files..")
+	log.info("[SOUNDBOARD] Loaded audio files..")
 end
 soundboard.reload()
 
@@ -32,9 +33,8 @@ function soundboard.playsound(name, override)
 	if type(sound) == 'table' then
 		sound = name .. '/' .. soundboard.sounds[name][math.random(1,#soundboard.sounds[name])]
 	end
-	if sound and (not piepan.Audio.isPlaying() or override) then
-		piepan.Audio.stop()
-		piepan.me.channel:play(soundboard.directory..sound)
+	if sound and (not dongerbot:isPlaying() or override) then
+		dongerbot:play(soundboard.encoder, soundboard.directory..sound)
 		return true
 	end
 end
@@ -53,16 +53,16 @@ command.Add( "sounds", function( ply, args )
 	end
 end, "List all the sounds available on the soundboard" )
 
-hook.Add( 'OnMessage', 'Soundboard Handler', function(event)
-	local msg = event.text
+dongerbot:hook("onMessage", "Soundboard Handler", function(event)
+	local msg = event.message
 	if msg:sub(1,1) == "#" then
 		local name = msg:sub(2):lower()
 		if name == "reload" then
 			soundboard.reload()
-			print(("[SOUNDBOARD] %s: reloaded all sounds"):format(event.user.name))
-		else
+			log.debug(("[SOUNDBOARD] %s: reloaded all sounds"):format(event.actor.name))
+		elseif soundboard.issound(name) then
 			soundboard.playsound(name)
-			print(("[SOUNDBOARD] %s: #%s"):format(event.user.name, name))
+			log.debug(("[SOUNDBOARD] %s: #%s"):format(event.actor.name, name))
 		end
 	end
 end )

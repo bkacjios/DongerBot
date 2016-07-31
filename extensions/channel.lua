@@ -1,33 +1,43 @@
-piepan.userchannel = piepan.userchannel or {}
-
-function piepan.Channel:getUsers()
+function mumble.channel:getUsers()
 	local users = {}
-	for name, channel in pairs(piepan.userchannel) do
-		if channel == self then
-			table.insert(users,piepan.users[name])
+	for session, user in pairs(dongerbot:getUsers()) do
+		if self == user.channel then
+			table.insert(users, user)
 		end
 	end
 	return users
 end
 
-hook.Add("OnConnect", "Channel Users Init", function()
-	for name,user in pairs(piepan.users) do
-		piepan.userchannel[user.name] = user.channel
-	end
-end)
+function mumble.client:getChannel(path)
+    if self:getChannels()[0] == nil then
+        return nil
+    end
+    return self:getChannels()[0](path)
+end
 
-hook.Add("OnUserChange", "Channel Tracker", function(event)
-	if event.isChangedChannel or event.isConnected then
-		piepan.userchannel[event.user.name] = event.user.channel
-		if event.user ~= piepan.me then
-			if event.user.channel == piepan.me.channel then
-				hook.Run("OnUserEnteredChannel", event)
-			elseif event.channelFrom == piepan.me.channel then
-				hook.Run("OnUserLeftChannel", event)
-			end
-		end
-	elseif event.isDisconnected then
-		piepan.userchannel[event.user.name] = nil
-		hook.Run("OnUserLeftChannel", event)
-	end
-end)
+function mumble.channel:__call(path)
+    assert(self ~= nil, "self cannot be nil")
+
+    if path == nil then
+        return self
+    end
+
+    local channel = self
+
+    for k in path:gmatch("([^/]+)") do
+        local current
+        if k == "." then
+            current = channel
+        elseif k == ".." then
+            current = channel.parent
+        else
+            current = channel.children[k]
+        end
+
+        if current == nil then
+            return nil
+        end
+        channel = current
+    end
+    return channel
+end

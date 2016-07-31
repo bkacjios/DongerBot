@@ -22,15 +22,15 @@ function command.Alias(name, alias)
 	}
 end
 
-command.Add("about", function(ply, args)
+command.Add("about", function(ply, cmd, args)
 	local message = [[<b>DongerBot</b>
-Created by <a href="https://github.com/Someguynamedpie">Somepotato</a> &amp; <a href="https://github.com/blackawps">Bkacjios</a><br/><br/>
-<a href="https://github.com/blackawps/DongerBot">https://github.com/blackawps/DongerBot</a>
-<a href="https://github.com/Someguynamedpie/piepan">https://github.com/Someguynamedpie/piepan</a>]]
-	ply:send(message)
+Created by <a href="https://github.com/Someguynamedpie">Somepotato</a> &amp; <a href="https://github.com/bkacjios">Bkacjios</a><br/><br/>
+<a href="https://github.com/bkacjios/DongerBot">https://github.com/bkacjios/DongerBot</a>
+<a href="https://github.com/bkacjios/lua-mumble">https://github.com/bkacjios/lua-mumble</a>]]
+	ply:message(message)
 end, "Get some information about DongerBot")
 
-command.Add("help", function(ply, args)
+command.Add("help", function(ply, cmd, args)
 	local debug = args[1] == "user"
 	local message = "Here's a list of commands<br/>"
 	for _,cmd in pairs(command.Commands) do
@@ -38,12 +38,12 @@ command.Add("help", function(ply, args)
 			message = message .. "<b>!" .. cmd.name .. "</b>" .. (cmd.help and (" - <i>" .. cmd.help .. "</i>") or "") .. "<br/>"
 		end
 	end
-	ply:send(message)
+	ply:message(message)
 end, "Display a list of all commands")
 command.Alias("help", "?")
 command.Alias("help", "commands")
 
-local function parseArgs(line)
+function command.parseArgs(line)
 	local cmd, val = line:match("(%S-)%s-=%s+(.+)")
 	if cmd and val then
 		return {cmd:trim(), val:trim()}
@@ -63,30 +63,32 @@ local function parseArgs(line)
 	return ret
 end
 
-hook.Add( 'OnMessage', 'Command Handler', function(event)
-	local user = event.user
-	local msg = event.text
+dongerbot:hook('onMessage', 'Command Handler', function(event)
+	local user = event.actor
+	local msg = event.message
 	local marker = msg:sub(1,1)
 	if marker == '!' or marker == '/' then
-		local raw = msg:sub(2)
-		raw = string.StripHTMLTags(raw)
-		raw = string.unescape(raw)
+		msg = string.StripHTMLTags(msg)
+		msg = string.unescape(msg)
 
-		local args = parseArgs(raw)
-		local cmdStr = table.remove(args,1):lower()
-		local cmd = command.Commands[ cmdStr ]
+		local args = command.parseArgs(msg)
+		local cmdStr = table.remove(args,1)
+		local cmd = command.Commands[ cmdStr:lower():sub(2) ]
 		if cmd then
 			if cmd.senpai and not user:isMaster() then
-				user:send("Permission Denied: ".. cmd)
+				log.warn(("[COMMAND] %s: %s (PERMISSION DENIED)"):format(user.name, msg))
+				user:message("Permission denied: ".. cmd)
 			else
-				local suc, err = pcall(cmd.callback, user, args, raw)
+				local suc, err = pcall(cmd.callback, user, cmdStr, args, msg)
 				if not suc then
-					print(("Command (%q) by %s FAILED: %q"):format(raw, user.name, err))
+					log.error(("[COMMAND] %s: %s (%q)"):format(user.name, msg, err))
+					user:message(("<b>%s</b> is currently <i>broken..</i>"):format(cmdStr))
 				end
 			end
 		else
-			user:send("Command not found: "..cmdStr)
+			log.info(("[COMMAND] %s: %s (Unknown Command)"):format(user.name, msg))
+			user:message(("Unknown command: <b>%s</b>"):format(cmdStr))
 		end
 		return false
 	end
-end )
+end)

@@ -21,16 +21,22 @@ local greetings = {
 local timemessage = "Good %s %s!"
 local hour = tonumber(os.date("%H"))
 
-hook.Add("OnUserEnteredChannel", "Welcome People", function(event)
+dongerbot:hook("onUserState", "Welcome People", function(event)
 	local user = event.user
 
-	if not piepan.Audio.isPlaying() and math.random(1,100) == 100 then
+	local channel = dongerbot.me.channel
+
+	if user.channel ~= channel then
+		return
+	end
+
+	if not dongerbot:isPlaying() and math.random(1,100) == 100 then
 		soundboard.playsound("lol")
 	end
 
 	if math.random(1,4) == 4 then
 		if user:isMaster() then
-			piepan.me.channel:send(table.Random(greetings):format(user.name))
+			channel:message(table.Random(greetings):format(user.name))
 		elseif fuckers[user.hash] then
 			if math.random(1,3) == 3 then
 				local message = "morning"
@@ -41,9 +47,9 @@ hook.Add("OnUserEnteredChannel", "Welcome People", function(event)
 					message = "afternoon"
 				end
 
-				piepan.me.channel:send(timemessage:format(message, user.name))
+				channel:message(timemessage:format(message, user.name))
 			else
-				piepan.me.channel:send(table.Random(insults):format(user.name))
+				channel:message(table.Random(insults):format(user.name))
 			end
 		end
 	end

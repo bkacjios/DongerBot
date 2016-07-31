@@ -1,32 +1,25 @@
 local lfs = require("lfs")
 
 autoreload = autoreload or {
-	monitoring = {},
-	polling = false,	
+	monitoring = {},	
 }
-
-function autoreload.start()
-	if not autoreload.polling then
-		autoreload.polling = true
-		autoreload.poll()
-	end
-end
 
 function autoreload.poll()
 	for k,v in pairs(autoreload.monitoring) do
 		local mod = lfs.attributes( k, 'modification' )
 		if v ~= mod then
 			autoreload.monitoring[ k ] = mod
-			local succ, err = pcall(loadfile(k))
+			local succ, err = pcall(dofile, k)
 			if not succ then
-				print( ("[RELOAD] %s: FAILED: %q"):format(k, err) )
+				log.info(("[AUTORELOAD] %s"):format(err))
 			else
-				print( ("[RELOAD] %s: SUCCESS"):format(k) )
+				log.info(("[AUTORELOAD] %s"):format(k))
 			end
 		end
 	end
-	piepan.Timer.new(autoreload.poll,1)
 end
+
+dongerbot:hook("onTick", autoreload.poll)
 
 function autoreload.watch(f)
 	autoreload.monitoring[ f ] = lfs.attributes(f, "modification")
@@ -34,16 +27,21 @@ end
 
 function include(f)
 	autoreload.watch(f)
-	dofile(f)
+	local succ, err = pcall(dofile, f)
+	if not succ then
+		log.info(("[INITIALIZE] %s"):format(err))
+	else
+		log.info(("[INITIALIZE] %s"):format(f))
+	end
 end
 
 function includeDir(directory)
 	for file in lfs.dir(directory) do
 		if file ~= '.' and file ~= '..' then
-			local mode = lfs.attributes(directory .. file, "mode")
+			local path = directory .. file
+			local mode = lfs.attributes(path, "mode")
 			if mode == 'file' then
-				print(("[INITIALIZE] %s"):format(directory .. file))
-				include(directory .. file)
+				include(path)
 			end
 		end
 	end

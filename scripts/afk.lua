@@ -1,44 +1,36 @@
 afk = {}
 
-hook.Add("OnUserStats", "AFK Checker", function(event)
+dongerbot:hook("onUserStats", "AFK Checker", function(event)
 	local user = event.user
-	local stats = event.stats
 
-	-- DongerBot is immune
-	if user == piepan.me then return end
-
-	local afkchannel = piepan.channels(config.afk.channel)
+	local afkchannel = dongerbot:getChannel(config.afk.channel)
 
 	-- Ignore people in the AFK channel
 	if user.channel == afkchannel then return end
 
-	if stats.idlesecs > (config.afk.movetime * 60) - (config.afk.warning * 60) then
+	if event.idlesecs > (config.afk.movetime * 60) - (config.afk.warning * 60) then
 		if not user.warned then
-			local idletime = math.floor(stats.idlesecs/60)
+			local idletime = math.floor(event.idlesecs/60)
 			local message = config.afk.warningmessage:format(idletime, config.afk.channel, config.afk.movetime - idletime)
-			user:send(message)
+			user:message(message)
 			user.warned = true
-			print(("[AFK] %s has been warned they are AFK"):format(user.name))
+			log.debug(("[AFK] %s has been warned they are AFK"):format(user.name))
 		end
 	elseif user.warned then
 		user.warned = false
-		print(("[AFK] %s is no longer AFK"):format(user.name))
+		log.debug(("[AFK] %s is no longer AFK"):format(user.name))
 	end
 
-	if stats.idlesecs > config.afk.movetime * 60 then
-		print(("[AFK] %s was moved to %s"):format(user.name, config.afk.channel))
-		user:moveTo(afkchannel)
+	if event.idlesecs > config.afk.movetime * 60 then
+		log.debug(("[AFK] %s was moved to %s"):format(user.name, config.afk.channel))
+		user:move(afkchannel)
 	end
 end)
 
-
-function afk.checkstats()
-	piepan.Timer.new(afk.checkstats, config.afk.checktime)
-	for k,user in pairs(piepan.users) do
-		user:requestStats()
+dongerbot:hook("onServerPing", "AFK Query Users", function()
+	for k,user in pairs(dongerbot:getUsers()) do
+		if user ~= dongerbot.me then
+			user:requestStats()
+		end
 	end
-end
-
-hook.Add("OnConnect", "AFK Start Timer", function()
-	afk.checkstats()
 end)
