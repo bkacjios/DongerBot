@@ -1,5 +1,3 @@
-afk = {}
-
 dongerbot:hook("onUserStats", "AFK Checker", function(event)
 	local user = event.user
 

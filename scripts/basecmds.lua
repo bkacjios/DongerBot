@@ -77,7 +77,7 @@ command.Add( "hash", function( ply, cmd, args )
 	if not args[1] then
 		ply:message(("%s: %s"):format(ply.name, ply.hash))
 	else
-		local target = piepan.users[args[1]]
+		local target = dongerbot:getUser(args[1])
 		if target then
 			ply:message(("%s: %s"):format(target.name, target.hash))
 		else
@@ -90,7 +90,7 @@ command.Add( "userid", function( ply, cmd, args )
 	if not args[1] then
 		ply:message(("%s: %s"):format(ply.name, ply.user_id or "unregistered"))
 	else
-		local target = piepan.users[args[1]]
+		local target = dongerbot:getUser(args[1])
 		if target then
 			ply:message(("%s: %s"):format(target.name, target.userId))
 		else

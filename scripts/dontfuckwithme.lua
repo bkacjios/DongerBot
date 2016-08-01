@@ -1,15 +1,17 @@
 dongerbot:hook("onUserState", "DONT FUCK WITH ME", function(event)
+	if not dongerbot.me then return end
+	
 	local user = event.user
 	local actor = event.actor
 
 	if user == dongerbot.me and actor ~= user then
 		if user.mute then
-			actor:mute(true)
-			user:mute(false)
+			actor:setMuted(true)
+			user:setMuted(false)
 			log.debug(("[FuckOFF] %s attempted to mute the donger"):format(actor.name))
 		elseif user.deaf then
-			actor:deafen(true)
-			user:deafen(false)
+			actor:setDeaf(true)
+			user:setDeaf(false)
 			log.debug(("[FuckOFF] %s attempted to deafen the donger"):format(actor.name))
 		elseif event.channel and not actor:isMaster() then
 			if actor.channel == event.channel_from then

@@ -15,6 +15,14 @@ function mumble.client:getChannel(path)
     return self:getChannels()[0](path)
 end
 
+function mumble.client:getUser(name)
+    for session, user in pairs(self:getUsers()) do
+        if user.name == name then
+            return user
+        end
+    end
+end
+
 function mumble.channel:__call(path)
     assert(self ~= nil, "self cannot be nil")
 
