@@ -7,12 +7,11 @@
 -- under the terms of the MIT license. See LICENSE for details.
 --
 
-local log = { _version = "0.1.0" }
+log = { _version = "0.1.0" }
 
 log.usecolor = true
 log.outfile = nil
 log.level = "trace"
-
 
 local modes = {
   { name = "trace", color = "\27[34m", },
@@ -82,6 +81,3 @@ for i, x in ipairs(modes) do
 
   end
 end
-
-
-return log

@@ -11,7 +11,7 @@ function autoreload.poll()
 			autoreload.monitoring[ k ] = mod
 			local succ, err = pcall(dofile, k)
 			if not succ then
-				log.debug(("[AUTORELOAD] %s"):format(err))
+				log.error(("[AUTORELOAD] %s"):format(err))
 			else
 				log.debug(("[AUTORELOAD] %s"):format(k))
 			end
@@ -29,7 +29,7 @@ function include(f)
 	autoreload.watch(f)
 	local succ, err = pcall(dofile, f)
 	if not succ then
-		log.debug(("[INITIALIZE] %s"):format(err))
+		log.error(("[INITIALIZE] %s"):format(err))
 	else
 		log.debug(("[INITIALIZE] %s"):format(f))
 	end

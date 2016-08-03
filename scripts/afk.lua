@@ -6,7 +6,7 @@ function afk.checkStats(event)
 	local afkchannel = dongerbot:getChannel(config.afk.channel)
 
 	-- Ignore people in the AFK channel
-	if user.channel == afkchannel then return end
+	if not afkchannel or user.channel == afkchannel then return end
 
 	if event.idlesecs > (config.afk.movetime * 60) - (config.afk.warning * 60) then
 		if not user.warned then

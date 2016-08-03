@@ -43,26 +43,6 @@ end, "Display a list of all commands")
 command.Alias("help", "?")
 command.Alias("help", "commands")
 
-function command.parseArgs(line)
-	local cmd, val = line:match("(%S-)%s-=%s+(.+)")
-	if cmd and val then
-		return {cmd:trim(), val:trim()}
-	end
-	local quote = line:sub(1,1) ~= '"'
-	local ret = {}
-	for chunk in string.gmatch(line, '[^"]+') do
-		quote = not quote
-		if quote then
-			table.insert(ret,chunk)
-		else
-			for chunk in string.gmatch(chunk, "%S+") do -- changed %w to %S to allow all characters except space
-				table.insert(ret, chunk)
-			end
-		end
-	end
-	return ret
-end
-
 function command.poll(event)
 	local user = event.actor
 	local msg = event.message
@@ -71,7 +51,7 @@ function command.poll(event)
 		msg = string.StripHTMLTags(msg)
 		msg = string.unescape(msg)
 
-		local args = command.parseArgs(msg)
+		local args = string.parseArgs(msg)
 		local cmdStr = table.remove(args,1)
 		local cmd = command.Commands[ cmdStr:lower():sub(2) ]
 		if cmd then
@@ -89,7 +69,6 @@ function command.poll(event)
 			log.info(("[COMMAND] %s: %s (Unknown Command)"):format(user.name, msg))
 			user:message(("Unknown command: <b>%s</b>"):format(cmdStr))
 		end
-		return false
 	end
 end
 
