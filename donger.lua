@@ -1,30 +1,37 @@
 local mumble = require"mumble"
 log = require"log"
 
-if not dongerbot then
-	dongerbot = assert(mumble.new("config/dongerbot.pem", "config/dongerbot.key"))
-	--assert(dongerbot:connect("raspberrypi.lan"))
-	assert(dongerbot:connect("mbl27.gameservers.com", 10004))
-end
+while true do
+	dongerbot, err = mumble.connect("mbl27.gameservers.com", 10004, "config/dongerbot.pem", "config/dongerbot.key")
+	--dongerbot, err = mumble.connect("raspberrypi.lan", 64738, "config/dongerbot.pem", "config/dongerbot.key")
 
-dofile("util.lua")
-autoreload.watch("util.lua")
-dofile("config.lua")
-autoreload.watch("config.lua")
+	if dongerbot then
+		log.info("Connected to server..")
 
-include("debug.lua")
-include("command.lua")
+		dongerbot:auth("DongerBot")
 
-includeDir("extensions/")
-includeDir("scripts/")
+		log.info("Authenticated..")
 
-dongerbot:auth("DongerBot")
+		dofile("util.lua")
+		autoreload.watch("util.lua")
 
-dongerbot:hook("onError", function(err)
-	log.error(err)
-end)
+		include("config.lua")
+		include("command.lua")
 
-while dongerbot do
-	dongerbot:update()
-	mumble.sleep(0.01)
+		includeDir("extensions/")
+		includeDir("scripts/")
+
+		dongerbot:hook("onError", function(err)
+			log.error(err)
+		end)
+
+		while dongerbot:isConnected() do
+			dongerbot:update()
+			mumble.sleep(0.01)
+		end
+
+		log.warn("Disconnected from server.. (reconnect in 5 seconds)")
+	end
+
+	mumble.sleep(5);
 end

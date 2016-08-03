@@ -59,10 +59,10 @@ dongerbot:hook("onMessage", "Soundboard Handler", function(event)
 		local name = msg:sub(2):lower()
 		if name == "reload" then
 			soundboard.reload()
-			log.debug(("[SOUNDBOARD] %s: reloaded all sounds"):format(event.actor.name))
+			log.info(("[SOUNDBOARD] %s: reloaded all sounds"):format(event.actor.name))
 		elseif soundboard.issound(name) then
-			soundboard.playsound(name)
-			log.debug(("[SOUNDBOARD] %s: #%s"):format(event.actor.name, name))
+			soundboard.playsound(name, true)
+			log.info(("[SOUNDBOARD] %s: #%s"):format(event.actor.name, name))
 		end
 	end
 end )

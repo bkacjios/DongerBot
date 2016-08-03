@@ -18,8 +18,8 @@ dongerbot:hook("onServerSync", function(event)
 	debug("onServerSync", event)
 end)
 
-dongerbot:hook("onServerPing", function()
-	debug("onServerPing")
+dongerbot:hook("onServerPing", function(event)
+	debug("onServerPing", event)
 end)
 
 dongerbot:hook("onChannelRemove", function(event)

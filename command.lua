@@ -63,7 +63,7 @@ function command.parseArgs(line)
 	return ret
 end
 
-dongerbot:hook('onMessage', 'Command Handler', function(event)
+function command.poll(event)
 	local user = event.actor
 	local msg = event.message
 	local marker = msg:sub(1,1)
@@ -91,4 +91,6 @@ dongerbot:hook('onMessage', 'Command Handler', function(event)
 		end
 		return false
 	end
-end)
+end
+
+dongerbot:hook("onMessage", "command", command.poll)

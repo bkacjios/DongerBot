@@ -1,4 +1,4 @@
-local lfs = require("lfs")
+local lfs = require"lfs"
 
 autoreload = autoreload or {
 	monitoring = {},	
@@ -11,15 +11,15 @@ function autoreload.poll()
 			autoreload.monitoring[ k ] = mod
 			local succ, err = pcall(dofile, k)
 			if not succ then
-				log.info(("[AUTORELOAD] %s"):format(err))
+				log.debug(("[AUTORELOAD] %s"):format(err))
 			else
-				log.info(("[AUTORELOAD] %s"):format(k))
+				log.debug(("[AUTORELOAD] %s"):format(k))
 			end
 		end
 	end
 end
 
-dongerbot:hook("onTick", autoreload.poll)
+dongerbot:hook("onTick", "autoreload", autoreload.poll)
 
 function autoreload.watch(f)
 	autoreload.monitoring[ f ] = lfs.attributes(f, "modification")
@@ -29,9 +29,9 @@ function include(f)
 	autoreload.watch(f)
 	local succ, err = pcall(dofile, f)
 	if not succ then
-		log.info(("[INITIALIZE] %s"):format(err))
+		log.debug(("[INITIALIZE] %s"):format(err))
 	else
-		log.info(("[INITIALIZE] %s"):format(f))
+		log.debug(("[INITIALIZE] %s"):format(f))
 	end
 end
 

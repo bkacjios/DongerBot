@@ -14,7 +14,7 @@ command.Add("volume", function(ply, cmd, args)
         volume = tonumber(volume)/100
         if not ply:isMaster() then volume = math.min(volume,1) end
         dongerbot:setVolume(volume)
-        log.debug(("[COMMAND] %s: changed the volume to %i"):format(ply.name, volume*100))
+        log.info(("[COMMAND] %s: changed the volume to %i"):format(ply.name, volume*100))
     else
     	ply:message(("Volume level: <b>%i</b>"):format(dongerbot:getVolume()*100))
     end
@@ -25,10 +25,10 @@ command.Add( "goto", function( ply, cmd, args )
 	local user = piepan.users[args[1]]
 	if user then -- Default to a user
 		dongerbot.me:move(user.channel)
-		log.debug(("[COMMAND] %s: sent me to %s"):format(ply.name, user.name))
+		log.info(("[COMMAND] %s: sent me to %s"):format(ply.name, user.name))
 	elseif channel then -- Fallback on a channel name
 		dongerbot.me:move(channel)
-		log.debug(("[COMMAND] %s: sent me to %s"):format(ply.name, user.channel.name))
+		log.info(("[COMMAND] %s: sent me to %s"):format(ply.name, user.channel.name))
 	else
 		ply:message("Unable to find a target to go to.")
 	end
@@ -42,7 +42,7 @@ command.Add( "summon", function( ply, cmd, args )
 		else
 			ply:message(("I'm comming %s!"):format(config.mastername))
 			dongerbot.me:move(ply.channel)
-			log.debug(("[COMMAND] %s: summoned me to %s"):format(ply.name, ply.channel.name))
+			log.info(("[COMMAND] %s: summoned me to %s"):format(ply.name, ply.channel.name))
 		end
 	else
 		local leashed, with = amIWithAMaster()
@@ -50,7 +50,7 @@ command.Add( "summon", function( ply, cmd, args )
 			ply:message(("I am already with my %s%s %s"):format(config.mastername, (#with>1 and "s: " or " "), table.concat(with, ", ")))
 		else
 			dongerbot.me:move(ply.channel)
-			log.debug(("[COMMAND] %s: summoned me to %s"):format(ply.name, ply.channel.name))
+			log.info(("[COMMAND] %s: summoned me to %s"):format(ply.name, ply.channel.name))
 		end
 	end
 end, "Make the bot come to the channel you are in" )
@@ -61,7 +61,7 @@ command.Add( "fuckoff", function( ply, cmd, args )
 		ply:message(("I won't leave my %s%s %s"):format(config.mastername, (#with>1 and "s: " or " "), table.concat(with, ", ")))
 	else
 		dongerbot.me:move(dongerbot:getChannel(config.home))
-		log.debug(("[COMMAND] %s: told me to fuck off"):format(ply.name))
+		log.info(("[COMMAND] %s: told me to fuck off"):format(ply.name))
 	end
 end, "Make the bot go to his channel" )
 

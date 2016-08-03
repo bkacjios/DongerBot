@@ -1,4 +1,6 @@
-dongerbot:hook("onUserStats", "AFK Checker", function(event)
+afk = {}
+
+function afk.checkStats(event)
 	local user = event.user
 
 	local afkchannel = dongerbot:getChannel(config.afk.channel)
@@ -12,23 +14,26 @@ dongerbot:hook("onUserStats", "AFK Checker", function(event)
 			local message = config.afk.warningmessage:format(idletime, config.afk.channel, config.afk.movetime - idletime)
 			user:message(message)
 			user.warned = true
-			log.debug(("[AFK] %s has been warned they are AFK"):format(user.name))
+			log.info(("[AFK] %s has been warned they are AFK"):format(user.name))
 		end
 	elseif user.warned then
 		user.warned = false
-		log.debug(("[AFK] %s is no longer AFK"):format(user.name))
+		log.info(("[AFK] %s is no longer AFK"):format(user.name))
 	end
 
 	if event.idlesecs > config.afk.movetime * 60 then
-		log.debug(("[AFK] %s was moved to %s"):format(user.name, config.afk.channel))
 		user:move(afkchannel)
+		log.info(("[AFK] %s was moved to %s"):format(user.name, config.afk.channel))
 	end
-end)
+end
 
-dongerbot:hook("onServerPing", "AFK Query Users", function()
+function afk.queryUsers()
 	for k,user in pairs(dongerbot:getUsers()) do
 		if user ~= dongerbot.me then
 			user:requestStats()
 		end
 	end
-end)
+end
+
+dongerbot:hook("onUserStats", "AFK Check", afk.checkStats)
+dongerbot:hook("onServerPing", "AFK Query Users", afk.queryUsers)
