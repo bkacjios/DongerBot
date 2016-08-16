@@ -1,7 +1,6 @@
 soundboard = {
 	directory = "soundboard/",
 	sounds = {},
-	encoder = mumble.encoder(),
 }
 
 function soundboard.reload()
@@ -34,7 +33,7 @@ function soundboard.playsound(name, override)
 		sound = name .. '/' .. soundboard.sounds[name][math.random(1,#soundboard.sounds[name])]
 	end
 	if sound and (not dongerbot:isPlaying() or override) then
-		dongerbot:play(soundboard.encoder, soundboard.directory..sound)
+		dongerbot:play(soundboard.directory..sound)
 		return true
 	end
 end
@@ -49,7 +48,7 @@ command.Add( "sounds", function( ply, args )
 		i = i + 1
 	end
 	for k,message in pairs(messages) do
-		ply:send(message)
+		ply:message(message)
 	end
 end, "List all the sounds available on the soundboard" )
 

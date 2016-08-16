@@ -5,6 +5,9 @@ function mumble.channel:getUsers()
 			table.insert(users, user)
 		end
 	end
+    table.sort(users, function(a,b)
+        return a.name < b.name
+    end)
 	return users
 end
 

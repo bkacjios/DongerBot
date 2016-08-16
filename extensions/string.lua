@@ -1,6 +1,10 @@
 local char = string.char
 local gsub = string.gsub
 
+function string.niceTime(str)
+
+end
+
 function string.trim(self, char)
 	char = char or "%s"
 	return (self:gsub("^"..char.."*(.-)"..char.."*$", "%1" ))
@@ -49,4 +53,57 @@ function string.parseArgs(line)
 		end
 	end
 	return ret
+end
+
+function string.Plural( str, num )
+	local fmt = ( "%i %s" ):format( num, str )
+	return num == 1 and fmt or ( fmt .. "s" )
+end
+
+function string.AOrAn( s )
+	return string.match( s, "^h?[AaEeIiOoUu]" ) and "an" or "a"
+end
+
+function math.SecondsToHuman( sec, accuracy )
+	local accuracy = accuracy or 2
+
+	local years = sec/31536000
+	local yearsRemainder = sec%31536000
+	local days = yearsRemainder/86400
+	local daysRemainder = sec%86400
+	local hours = daysRemainder/3600
+	local hourRemainder = (sec - 86400)%3600
+	local min = hourRemainder/60
+	local sec = sec%60
+	
+	years = math.floor( years )
+	days = math.floor( days )
+	hours = math.floor( hours )
+	min = math.floor( min )
+	sec = math.floor( sec )
+	
+	local results = {}
+	
+	if years >= 1 then
+		table.insert( results, string.Plural( "year", years ) )
+	end
+	if days >= 1 then
+		table.insert( results, string.Plural( "day", days ) )
+	end
+	if hours >= 1 then
+		table.insert( results, string.Plural( "hour", hours ) )
+	end
+	if min >= 1 then
+		table.insert( results, string.Plural( "minute", min ) )
+	end
+	if sec >= 1 then
+		table.insert( results, string.Plural( "second", sec ) )
+	end
+	
+	local result = {}
+	for i=1,accuracy do
+		result[ i ] = results[ i ]
+	end
+	
+	return table.concat( result, ", " )
 end

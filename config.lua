@@ -21,6 +21,7 @@ config = {
 	masters = {
 		["b304c9259eca9d38abb8cebd242b4609be2f972e"] = true,	-- Bkacjios
 		["64f59879ea4e10658fd01a0592c7d6ebbf20a443"] = true,	-- Orange-Tang
+		["4109b0315ce639056869be0f041cf3aa53e39275"] = true,	-- Atsu
 	},
 
 	-- The default channel for the bot

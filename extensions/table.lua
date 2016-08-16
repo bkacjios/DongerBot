@@ -43,3 +43,17 @@ function table.ShuffleCopy(t)
 	end
 	return r
 end
+
+function ChannelPairs(t)
+	local s = {}
+	for n,c in pairs(t) do
+		table.insert(s, c)
+	end
+	table.sort(s, function(a,b)
+		if a.position ~= b.position then
+			return a.position < b.position
+		end
+		return a.id < b.id
+	end)
+	return pairs(s)
+end

@@ -88,7 +88,7 @@ end, "Get the hash of a user", true )
 
 command.Add( "userid", function( ply, cmd, args )
 	if not args[1] then
-		ply:message(("%s: %s"):format(ply.name, ply.user_id or "unregistered"))
+		ply:message(("%s: %s"):format(ply.name, ply.id or "unregistered"))
 	else
 		local target = dongerbot:getUser(args[1])
 		if target then

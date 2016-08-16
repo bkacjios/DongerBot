@@ -19,7 +19,7 @@ dongerbot:hook("onServerSync", function(event)
 end)
 
 dongerbot:hook("onServerPing", function(event)
-	debug("onServerPing", event)
+	--debug("onServerPing", event)
 end)
 
 dongerbot:hook("onChannelRemove", function(event)
@@ -36,6 +36,7 @@ end)
 
 dongerbot:hook("onUserState", function(event)
 	debug("onUserState", event)
+	--for k,v in pairs(dongerbot:getUsers()) do print(k,v) end
 end)
 
 dongerbot:hook("onMessage", function(event)
@@ -51,7 +52,7 @@ dongerbot:hook("onCodecVersion", function(event)
 end)
 
 dongerbot:hook("onUserStats", function(event)
-	debug("onUserStats", event)
+	--debug("onUserStats", event)
 end)
 
 dongerbot:hook("onServerConfig", function(event)

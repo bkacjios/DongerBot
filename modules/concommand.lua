@@ -32,14 +32,14 @@ function concommand.run(msg)
 	msg = msg:gsub("\n", "")
 	local args = string.parseArgs(msg)
 	local cmdStr = table.remove(args,1)
+	if not cmdStr then return end
 	local cmd = concommand.Commands[cmdStr:lower()]
 	if cmd then
 		local suc, err = pcall(cmd.callback, cmdStr, args, msg)
 		if not suc then
-			log.error(("[CONSOLE] %s: %s (%q)"):format(msg, err))
+			log.error(("[CONSOLE] %s (%q)"):format(msg, err))
 		end
 	else
 		print(("Unknown command: %s"):format(cmdStr))
 	end
-	return false
 end

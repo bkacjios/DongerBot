@@ -1,10 +1,14 @@
 local lfs = require"lfs"
 
 autoreload = autoreload or {
-	monitoring = {},	
+	monitoring = {},
+	lastpoll = mumble.gettime(),
 }
 
 function autoreload.poll()
+	if autoreload.lastpoll > mumble.gettime() then return end
+	autoreload.lastpoll = mumble.gettime() + 1
+
 	for k,v in pairs(autoreload.monitoring) do
 		local mod = lfs.attributes( k, 'modification' )
 		if v ~= mod then
