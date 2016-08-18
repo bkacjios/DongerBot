@@ -72,4 +72,4 @@ function command.poll(event)
 	end
 end
 
-dongerbot:hook("onMessage", "command", command.poll)
+dongerbot:hook("OnMessage", "command", command.poll)

@@ -7,54 +7,58 @@ local function debug(...)
 end
 
 dongerbot:hook("OnServerVersion", function(event)
-	debug("onServerVersion", event)
+	debug("OnServerVersion", event)
 end)
 
 dongerbot:hook("OnServerReject", function(event)
-	debug("onServerReject", event)
+	debug("OnServerReject", event)
 end)
 
 dongerbot:hook("OnServerSync", function(event)
-	debug("onServerSync", event)
+	debug("OnServerSync", event)
 end)
 
 dongerbot:hook("OnServerPing", function(event)
-	--debug("onServerPing", event)
+	--debug("OnServerPing", event)
 end)
 
 dongerbot:hook("OnChannelRemove", function(event)
-	debug("onChannelRemove", event)
+	debug("OnChannelRemove", event)
 end)
 
 dongerbot:hook("OnChannelState", function(event)
-	debug("onChannelState", event)
+	debug("OnChannelState", event)
 end)
 
 dongerbot:hook("OnUserRemove", function(event)
-	debug("onUserRemove", event)
+	debug("OnUserRemove", event)
 end)
 
 dongerbot:hook("OnUserState", function(event)
-	debug("onUserState", event)
+	debug("OnUserState", event)
 	--for k,v in pairs(dongerbot:getUsers()) do print(k,v) end
 end)
 
 dongerbot:hook("OnMessage", function(event)
-	debug("onMessage", event)
+	debug("OnMessage", event)
 end)
 
 dongerbot:hook("OnPermissionDenied", function(event)
-	debug("onPermissionDenied", event)
+	debug("OnPermissionDenied", event)
 end)
 
 dongerbot:hook("OnCodecVersion", function(event)
-	debug("onCodecVersion", event)
+	debug("OnCodecVersion", event)
 end)
 
 dongerbot:hook("OnUserStats", function(event)
-	--debug("onUserStats", event)
+	--debug("OnUserStats", event)
 end)
 
 dongerbot:hook("OnServerConfig", function(event)
-	debug("onServerConfig", event)
+	debug("OnServerConfig", event)
+end)
+
+dongerbot:hook("OnAudioFinished", function()
+	debug("OnAudioFinished")
 end)

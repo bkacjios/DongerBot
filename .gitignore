@@ -6,3 +6,4 @@ ttsengines/
 *.key
 config/
 scripts/twitch.lua
+twitch.db

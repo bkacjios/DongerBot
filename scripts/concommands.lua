@@ -8,9 +8,9 @@ end, "Display a list of all users")
 
 local function printTree(branch, tabs)
 	tabs = tabs or 0
-	print(("%s%i - %s (%i)"):format(("\t"):rep(tabs), branch.id, branch.name, #branch:getUsers()))
+	print(("%s%3i - %s (%i)"):format(("\t"):rep(tabs), branch.id, branch.name, #branch:getUsers()))
 	for k,user in ipairs(branch:getUsers()) do
-		print(("%s%s"):format(("\t"):rep(tabs + 1), user.name))
+		print(("%s%3i - %s"):format(("\t"):rep(tabs + 1), user.id or 0, user.name))
 	end
 
 	for k,chan in ChannelPairs(branch.children, "id") do

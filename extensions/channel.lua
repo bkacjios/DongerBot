@@ -52,3 +52,17 @@ function mumble.channel:__call(path)
 	end
 	return channel
 end
+
+function ChannelPairs(t)
+	local s = {}
+	for n,c in pairs(t) do
+		table.insert(s, c)
+	end
+	table.sort(s, function(a,b)
+		if a.position ~= b.position then
+			return a.position < b.position
+		end
+		return a.name:lower() < b.name:lower()
+	end)
+	return pairs(s)
+end
