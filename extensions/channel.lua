@@ -5,50 +5,50 @@ function mumble.channel:getUsers()
 			table.insert(users, user)
 		end
 	end
-    table.sort(users, function(a,b)
-        return a.name < b.name
-    end)
+	table.sort(users, function(a,b)
+		return a.name < b.name
+	end)
 	return users
 end
 
 function mumble.client:getChannel(path)
-    if self:getChannels()[0] == nil then
-        return nil
-    end
-    return self:getChannels()[0](path)
+	if self:getChannels()[0] == nil then
+		return nil
+	end
+	return self:getChannels()[0](path)
 end
 
 function mumble.client:getUser(name)
-    for session, user in pairs(self:getUsers()) do
-        if user.name == name then
-            return user
-        end
-    end
+	for session, user in pairs(self:getUsers()) do
+		if user.name == name then
+			return user
+		end
+	end
 end
 
 function mumble.channel:__call(path)
-    assert(self ~= nil, "self cannot be nil")
+	assert(self ~= nil, "self cannot be nil")
 
-    if path == nil then
-        return self
-    end
+	if path == nil then
+		return self
+	end
 
-    local channel = self
+	local channel = self
 
-    for k in path:gmatch("([^/]+)") do
-        local current
-        if k == "." then
-            current = channel
-        elseif k == ".." then
-            current = channel.parent
-        else
-            current = channel.children[k]
-        end
+	for k in path:gmatch("([^/]+)") do
+		local current
+		if k == "." then
+			current = channel
+		elseif k == ".." then
+			current = channel.parent
+		else
+			current = channel.children[k]
+		end
 
-        if current == nil then
-            return nil
-        end
-        channel = current
-    end
-    return channel
+		if current == nil then
+			return nil
+		end
+		channel = current
+	end
+	return channel
 end

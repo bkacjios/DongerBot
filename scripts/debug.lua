@@ -6,55 +6,55 @@ local function debug(...)
 	end
 end
 
-dongerbot:hook("onServerVersion", function(event)
+dongerbot:hook("OnServerVersion", function(event)
 	debug("onServerVersion", event)
 end)
 
-dongerbot:hook("onServerReject", function(event)
+dongerbot:hook("OnServerReject", function(event)
 	debug("onServerReject", event)
 end)
 
-dongerbot:hook("onServerSync", function(event)
+dongerbot:hook("OnServerSync", function(event)
 	debug("onServerSync", event)
 end)
 
-dongerbot:hook("onServerPing", function(event)
+dongerbot:hook("OnServerPing", function(event)
 	--debug("onServerPing", event)
 end)
 
-dongerbot:hook("onChannelRemove", function(event)
+dongerbot:hook("OnChannelRemove", function(event)
 	debug("onChannelRemove", event)
 end)
 
-dongerbot:hook("onChannelState", function(event)
+dongerbot:hook("OnChannelState", function(event)
 	debug("onChannelState", event)
 end)
 
-dongerbot:hook("onUserRemove", function(event)
+dongerbot:hook("OnUserRemove", function(event)
 	debug("onUserRemove", event)
 end)
 
-dongerbot:hook("onUserState", function(event)
+dongerbot:hook("OnUserState", function(event)
 	debug("onUserState", event)
 	--for k,v in pairs(dongerbot:getUsers()) do print(k,v) end
 end)
 
-dongerbot:hook("onMessage", function(event)
+dongerbot:hook("OnMessage", function(event)
 	debug("onMessage", event)
 end)
 
-dongerbot:hook("onPermissionDenied", function(event)
+dongerbot:hook("OnPermissionDenied", function(event)
 	debug("onPermissionDenied", event)
 end)
 
-dongerbot:hook("onCodecVersion", function(event)
+dongerbot:hook("OnCodecVersion", function(event)
 	debug("onCodecVersion", event)
 end)
 
-dongerbot:hook("onUserStats", function(event)
+dongerbot:hook("OnUserStats", function(event)
 	--debug("onUserStats", event)
 end)
 
-dongerbot:hook("onServerConfig", function(event)
+dongerbot:hook("OnServerConfig", function(event)
 	debug("onServerConfig", event)
 end)

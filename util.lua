@@ -23,7 +23,7 @@ function autoreload.poll()
 	end
 end
 
-dongerbot:hook("onTick", "autoreload", autoreload.poll)
+dongerbot:hook("OnTick", "autoreload", autoreload.poll)
 
 function autoreload.watch(f)
 	autoreload.monitoring[ f ] = lfs.attributes(f, "modification")

@@ -1,4 +1,4 @@
-dongerbot:hook("onUserState", "DONT FUCK WITH ME", function(event)
+dongerbot:hook("OnUserState", "DONT FUCK WITH ME", function(event)
 	if not dongerbot.me then return end
 	
 	local user = event.user

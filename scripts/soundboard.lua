@@ -52,7 +52,7 @@ command.Add( "sounds", function( ply, args )
 	end
 end, "List all the sounds available on the soundboard" )
 
-dongerbot:hook("onMessage", "Soundboard Handler", function(event)
+dongerbot:hook("OnMessage", "Soundboard Handler", function(event)
 	local msg = event.message
 	if msg:sub(1,1) == "#" then
 		local name = msg:sub(2):lower()

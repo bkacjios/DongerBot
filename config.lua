@@ -55,6 +55,9 @@ config = {
 		movetime = 90,
 
 		-- Channel to move idle users to
-		channel = "Wee Willy Winkys Magical Bed of Sleep Town",
+		channel = {
+			["Raspberry Pi"] = "AFK",
+			["THIRD MUMBLE TIME"] = "Wee Willy Winkys Magical Bed of Sleep Town",
+		}
 	}
 }

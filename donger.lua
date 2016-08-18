@@ -2,14 +2,12 @@ local mumble = require"mumble"
 local ev = require"ev"
 require"log"
 
-local function onError(err)
-	print(debug.traceback())
-end
+math.randomseed(os.time())
 
 local function loop()
 	if not dongerbot  then
-		--dongerbot, err = mumble.connect("mbl27.gameservers.com", 10004, "config/dongerbot.pem", "config/dongerbot.key")
-		dongerbot, err = mumble.connect("raspberrypi.lan", 64738, "config/dongerbot.pem", "config/dongerbot.key")
+		dongerbot, err = mumble.connect("mbl27.gameservers.com", 10004, "config/dongerbot.pem", "config/dongerbot.key")
+		--dongerbot, err = mumble.connect("raspberrypi.lan", 64738, "config/dongerbot.pem", "config/dongerbot.key")
 
 		if dongerbot then
 			log.info("Connected to server..")
@@ -27,12 +25,12 @@ local function loop()
 			includeDir("modules/")
 			includeDir("scripts/")
 
-			dongerbot:hook("onError", function(err)
+			dongerbot:hook("OnError", function(err)
 				log.error(err)
 			end)
 		else
-			-- Failed to connect.. try again in 5
-			mumble.sleep(5)
+			-- Failed to connect.. try again in 3
+			mumble.sleep(3)
 		end
 	elseif dongerbot and dongerbot:isConnected() then
 		dongerbot:update()
@@ -46,12 +44,12 @@ end
 local evt = ev.IO.new( function()
 	xpcall(function()
 		concommand.run(io.read())
-	end, onError)
+	end, function() print(debug.traceback()) end)
 end, 0, ev.READ )
 evt:start( ev.Loop.default, false )
 
 local timer = ev.Timer.new(function()
-	xpcall(loop, onError)
+	xpcall(loop, function() print(debug.traceback()) end)
 end, 0.01, 0.01 )
 timer:start( ev.Loop.default )
 ev.Loop.default:loop()

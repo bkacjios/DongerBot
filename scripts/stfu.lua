@@ -1,4 +1,4 @@
-dongerbot:hook("onMessage", "STFU", function(event)
+dongerbot:hook("OnMessage", "STFU", function(event)
 	local msg = event.message
 	if msg:lower() == "stfu" then
 		-- Check if the current audio is youtube audio and check if the user has access

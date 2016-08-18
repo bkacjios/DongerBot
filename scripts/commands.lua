@@ -9,15 +9,15 @@ local function amIWithAMaster() -- Get a table of all masters
 end
 
 command.Add("volume", function(ply, cmd, args)
-    local volume = args[1]
-    if volume then
-        volume = tonumber(volume)/100
-        if not ply:isMaster() then volume = math.min(volume,1) end
-        dongerbot:setVolume(volume)
-        log.info(("[COMMAND] %s: changed the volume to %i"):format(ply.name, volume*100))
-    else
-    	ply:message(("Volume level: <b>%i</b>"):format(dongerbot:getVolume()*100))
-    end
+	local volume = args[1]
+	if volume then
+		volume = tonumber(volume)/100
+		if not ply:isMaster() then volume = math.min(volume,1) end
+		dongerbot:setVolume(volume)
+		log.info(("[COMMAND] %s: changed the volume to %i"):format(ply.name, volume*100))
+	else
+		ply:message(("Volume level: <b>%i</b>"):format(dongerbot:getVolume()*100))
+	end
 end, "Change the output volume of the bot")
 
 command.Add( "goto", function( ply, cmd, args )

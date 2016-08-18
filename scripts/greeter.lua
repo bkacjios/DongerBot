@@ -21,7 +21,7 @@ local greetings = {
 local timemessage = "Good %s %s!"
 local hour = tonumber(os.date("%H"))
 
-dongerbot:hook("onUserState", "Welcome People", function(event)
+dongerbot:hook("OnUserState", "Welcome People", function(event)
 	if not dongerbot.me then return end
 
 	local user = event.user

@@ -18,12 +18,12 @@ function tts.speak(txt)
 		return
 	end
 	
-    local f = assert(io.open(tts.Directory .. tts.File,'wb'))
-    f:write('[:phone on][:error ignore on]' .. txt)
-    f:close()
+	local f = assert(io.open(tts.Directory .. tts.File,'wb'))
+	f:write('[:phone on][:error ignore on]' .. txt)
+	f:close()
 
 	piepan.Thread.new(speakFileThread, function()
-    	piepan.Audio.stop()
+		piepan.Audio.stop()
 		piepan.me.channel:play(tts.Directory .. "tts.ogg")
 		print("TTS: " .. txt)
 	end)

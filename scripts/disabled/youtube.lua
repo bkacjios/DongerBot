@@ -2,15 +2,15 @@ local https = require'ssl.https'
 local json = require"dkjson"
 
 local function getDuration(stamp)
-    local hours = string.match(stamp, "(%d+)H") or 0
-    local minutes = string.match(stamp, "(%d+)M") or 0
-    local seconds = string.match(stamp, "(%d+)S") or 0
+	local hours = string.match(stamp, "(%d+)H") or 0
+	local minutes = string.match(stamp, "(%d+)M") or 0
+	local seconds = string.match(stamp, "(%d+)S") or 0
 
-    if hours > 0 then
-    	return string.format("%02d:%02d:%02d", hours, minutes, seconds)
-    else
-    	return string.format("%02d:%02d", minutes, seconds)
-    end
+	if hours > 0 then
+		return string.format("%02d:%02d:%02d", hours, minutes, seconds)
+	else
+		return string.format("%02d:%02d", minutes, seconds)
+	end
 end
 
 local function youtube( channel, u )
@@ -26,20 +26,20 @@ local function youtube( channel, u )
 
 	return ([[
 <table>
-    <tr>
-        <td valign="middle">
-            <img src='https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png' height="25" />
-        </td>
-        <td align="center" valign="middle">
-            <a href="http://youtu.be/%s">%s (%s)</a>
-        </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td align="center">
-            <a href="http://youtu.be/%s"><img src="%s" width="250" /></a>
-        </td>
-    </tr>
+	<tr>
+		<td valign="middle">
+			<img src='https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png' height="25" />
+		</td>
+		<td align="center" valign="middle">
+			<a href="http://youtu.be/%s">%s (%s)</a>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td align="center">
+			<a href="http://youtu.be/%s"><img src="%s" width="250" /></a>
+		</td>
+	</tr>
 </table>
 ]]):format(u, items.snippet.title, getDuration(items.contentDetails.duration), u, items.snippet.thumbnails.medium.url)
 end
