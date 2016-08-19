@@ -28,6 +28,12 @@ local function loop()
 			dongerbot:hook("OnError", function(err)
 				log.error(err)
 			end)
+
+			dongerbot:hook("OnUserRemove", function(event)
+				local user = event.user
+				if user ~= dongerbot.me then return end
+				log.warn(("%s from server (%q)"):format(event.ban and "Banned" or "Kicked", event.reason or "no reason"))
+			end)
 		else
 			-- Failed to connect.. try again in 3
 			mumble.sleep(3)
