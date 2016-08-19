@@ -27,7 +27,7 @@ dongerbot:hook("OnUserState", "Welcome People", function(event)
 	local user = event.user
 	local channel = dongerbot.me.channel
 
-	if user.channel ~= channel then return end
+	if not user.channel_from or user == dongerbot.me then return end
 
 	if not dongerbot:isPlaying() and math.random(1,100) == 100 then
 		soundboard.playsound("lol")

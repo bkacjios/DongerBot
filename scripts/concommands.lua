@@ -1,8 +1,8 @@
 concommand.Add("status", function(cmd, args)
-	print( "Mumble Server Status" )
-	print( ("# %7s %6s %-10s"):format("session", "userid", "name") )
-	for session, user in pairs(dongerbot:getUsers()) do
-		print( ("# %7s %6s %-10s"):format(session, user.id or "unreg", user.name))
+	print("Mumble Server Status")
+	print(("# %2s %7s %-12s %8s %-8s"):format("id", "session", "name", "channel", "comment"))
+	for k, user in UserPairs(dongerbot:getUsers()) do
+		print(("# %2s %7s %-12s %8s %-8s"):format(user.id or 0, user.session, user.name, user.channel.id, user.comment or ""))
 	end
 end, "Display a list of all users")
 

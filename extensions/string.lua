@@ -1,10 +1,6 @@
 local char = string.char
 local gsub = string.gsub
 
-function string.niceTime(str)
-
-end
-
 function string.trim(self, char)
 	char = char or "%s"
 	return (self:gsub("^"..char.."*(.-)"..char.."*$", "%1" ))
