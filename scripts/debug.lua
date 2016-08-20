@@ -1,9 +1,8 @@
 local DEBUG = false
 
 local function debug(...)
-	if DEBUG then
-		print(...)
-	end
+	if not DEBUG then return end
+	print(...)
 end
 
 dongerbot:hook("OnServerVersion", function(event)
@@ -22,12 +21,12 @@ dongerbot:hook("OnServerPing", function(event)
 	--debug("OnServerPing", event)
 end)
 
-dongerbot:hook("OnChannelRemove", function(event)
-	debug("OnChannelRemove", event)
+dongerbot:hook("OnChannelRemove", function(channel)
+	debug("OnChannelRemove", channel)
 end)
 
-dongerbot:hook("OnChannelState", function(event)
-	debug("OnChannelState", event)
+dongerbot:hook("OnChannelState", function(channel)
+	debug("OnChannelState", channel)
 end)
 
 dongerbot:hook("OnUserRemove", function(event)
