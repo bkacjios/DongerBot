@@ -19,19 +19,19 @@ function math.SecondsToHuman( sec, accuracy )
 	local results = {}
 	
 	if years >= 1 then
-		table.insert( results, string.Plural( "year", years ) )
+		table.insert( results, years .. string.Plural( " year", years ) )
 	end
 	if days >= 1 then
-		table.insert( results, string.Plural( "day", days ) )
+		table.insert( results, days .. string.Plural( " day", days ) )
 	end
 	if hours >= 1 then
-		table.insert( results, string.Plural( "hour", hours ) )
+		table.insert( results, hours .. string.Plural( " hour", hours ) )
 	end
 	if min >= 1 then
-		table.insert( results, string.Plural( "minute", min ) )
+		table.insert( results, min .. string.Plural( " minute", min ) )
 	end
 	if sec >= 1 then
-		table.insert( results, string.Plural( "second", sec ) )
+		table.insert( results, sec.. string.Plural( " second", sec ) )
 	end
 	
 	local result = {}

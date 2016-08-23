@@ -7,6 +7,10 @@ function afk.checkStats(event)
 
 	local afkchannel = dongerbot:getChannel(config.afk.channel[root])
 
+	if user.name == "Amer" then
+		afkchannel = dongerbot:getChannels()[30] or afkchannel 
+	end
+
 	-- Ignore people in the AFK channel
 	if not afkchannel or user.channel == afkchannel then return end
 

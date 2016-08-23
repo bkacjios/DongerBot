@@ -52,8 +52,7 @@ function string.parseArgs(line)
 end
 
 function string.Plural( str, num, suffix )
-	local fmt = ("%i %s"):format(num, str)
-	return num == 1 and fmt or (fmt .. (suffix or "s"))
+	return num == 1 and str or (str .. (suffix or "s"))
 end
 
 function string.AOrAn( s )
