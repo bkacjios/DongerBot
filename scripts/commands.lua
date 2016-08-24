@@ -22,7 +22,7 @@ end, "Change the output volume of the bot")
 
 command.Add( "goto", function( ply, cmd, args )
 	local channel = dongerbot:getChannel(args[1])
-	local user = piepan.users[args[1]]
+	local user = dongerbot:getUser(args[1])
 	if user then -- Default to a user
 		dongerbot.me:move(user.channel)
 		log.info(("[COMMAND] %s: sent me to %s"):format(ply.name, user.name))
