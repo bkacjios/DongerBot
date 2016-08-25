@@ -21,13 +21,13 @@ local greetings = {
 local timemessage = "Good %s %s!"
 local hour = tonumber(os.date("%H"))
 
-dongerbot:hook("OnUserState", "Welcome People", function(event)
+dongerbot:hook("OnUserChangedChannel", "Welcome People", function(event)
 	if not dongerbot.me then return end
 
 	local user = event.user
-	local channel = dongerbot.me.channel
+	local channel = dongerbot.me:getChannel()
 
-	if (not user.channel_from and user.channel ~= dongerbot.me.channel) or user == dongerbot.me then return end
+	if user == dongerbot.me or event.channel_to ~= channel then return end
 
 	if not dongerbot:isPlaying() and math.random(1,100) == 100 then
 		soundboard.playsound("lol")
@@ -44,11 +44,11 @@ dongerbot:hook("OnUserState", "Welcome People", function(event)
 			elseif hour < 17 and hour >= 12 then
 				message = "afternoon"
 			end
-			channel:message(timemessage:format(message, user.name))
+			channel:message(timemessage:format(message, user:getName()))
 		elseif nice == 2 and fuckers[user.hash] then
-			channel:message(table.Random(insults):format(user.name))
+			channel:message(table.Random(insults):format(user:getName()))
 		else
-			channel:message(table.Random(greetings):format(user.name))
+			channel:message(table.Random(greetings):format(user:getName()))
 		end
 	end
 end)

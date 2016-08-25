@@ -1,5 +1,11 @@
 local DEBUG = false
 
+function string.tohex(str)
+    return (str:gsub('.', function (c)
+        return string.format('%02X', string.byte(c))
+    end))
+end
+
 local function debug(...)
 	if not DEBUG then return end
 	print(...)
@@ -35,7 +41,10 @@ end)
 
 dongerbot:hook("OnUserState", function(event)
 	debug("OnUserState", event)
-	--for k,v in pairs(dongerbot:getUsers()) do print(k,v) end
+end)
+
+dongerbot:hook("OnUserChangedChannel", function(event)
+	debug("OnUserChangedChannel", event)
 end)
 
 dongerbot:hook("OnMessage", function(event)

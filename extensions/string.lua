@@ -58,3 +58,13 @@ end
 function string.AOrAn( s )
 	return string.match( s, "^h?[AaEeIiOoUu]" ) and "an" or "a"
 end
+
+function string.longest(...)
+	local longest
+	for k,str in pairs({...}) do
+		if not longest or #longest < #str then
+			longest = str
+		end
+	end
+	return longest
+end
