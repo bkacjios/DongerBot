@@ -76,12 +76,11 @@ function amer.checkAllAccountMatches()
 	end
 end
 
-dongerbot:hook("OnUserChangedChannel", "Amer - Stop being drunk", function(event)
+dongerbot:hook("OnUserChannel", "Amer - Stop being drunk", function(event)
 	local user = event.user
 
 	local channel = dongerbot:getChannels()[30] or dongerbot:getChannels()[6]
-
-	-- TO DO: Register his ass
+	
 	if user:getName() ~= "Amer" then return end
 
 	local cur_time = os.time()

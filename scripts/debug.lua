@@ -17,6 +17,10 @@ dongerbot:hook("OnServerSync", function(event)
 	debug("OnServerSync", event)
 end)
 
+dongerbot:hook("OnClientPing", function(event)
+	--debug("OnClientPing", event)
+end)
+
 dongerbot:hook("OnServerPing", function(event)
 	--debug("OnServerPing", event)
 end)
@@ -37,8 +41,8 @@ dongerbot:hook("OnUserState", function(event)
 	debug("OnUserState", event)
 end)
 
-dongerbot:hook("OnUserChangedChannel", function(event)
-	debug("OnUserChangedChannel", event)
+dongerbot:hook("OnUserChannel", function(event)
+	debug("OnUserChannel", event)
 end)
 
 dongerbot:hook("OnMessage", function(event)
