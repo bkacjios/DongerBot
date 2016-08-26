@@ -1,13 +1,10 @@
-function mumble.channel:getUsers()
+--[[function mumble.channel:getUsers()
 	local users = {}
 	for session, user in pairs(dongerbot:getUsers()) do
 		if self == user:getChannel() then
-			table.insert(users, user)
+			users[user:getSession()] = user
 		end
 	end
-	table.sort(users, function(a,b)
-		return a:getName() < b:getName()
-	end)
 	return users
 end
 
@@ -19,14 +16,7 @@ function mumble.channel:getChildren()
 		end
 	end
 	return children
-end
-
-function mumble.client:getChannel(path)
-	if self:getChannels()[0] == nil then
-		return nil
-	end
-	return self:getChannels()[0](path)
-end
+end]]
 
 function mumble.client:getUser(name)
 	for session, user in pairs(self:getUsers()) do
@@ -34,6 +24,13 @@ function mumble.client:getUser(name)
 			return user
 		end
 	end
+end
+
+function mumble.client:getChannel(path)
+	if self:getChannels()[0] == nil then
+		return nil
+	end
+	return self:getChannels()[0](path)
 end
 
 function mumble.channel:__call(path)
@@ -54,7 +51,6 @@ function mumble.channel:__call(path)
 		else
 			current = channel:getChildren()[k]
 		end
-
 		if current == nil then
 			return nil
 		end

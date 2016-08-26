@@ -25,7 +25,7 @@ end, "Display a list of all users")
 local function printTree(branch, tabs)
 	tabs = tabs or 0
 	print(("%s%3i - %s (%i)"):format(("\t"):rep(tabs), branch:getID(), branch:getName(), #branch:getUsers()))
-	for k,user in ipairs(branch:getUsers()) do
+	for k,user in UserPairs(branch:getUsers()) do
 		print(("%s%3i - %s"):format(("\t"):rep(tabs + 1), user:getID(), user:getName()))
 	end
 
@@ -42,7 +42,3 @@ end, "Display a list of all channels")
 concommand.Add("disconnect", function(cmd, args)
 	dongerbot:disconnect()
 end)
-
-for k,v in pairs(dongerbot:getUsers()) do
-	print(v:getName(), v:getCommentHash())
-end
