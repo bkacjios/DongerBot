@@ -10,6 +10,12 @@ function string.AddCommas( str )
 	return tostring(str):reverse():gsub("(...)", "%1,"):gsub(",$", ""):reverse()
 end
 
+function string.tohex(str)
+    return (str:gsub('.', function (c)
+        return string.format('%02X', string.byte(c))
+    end))
+end
+
 local entityMap  = {
 	["lt"]		= "<",
 	["gt"]		= ">",

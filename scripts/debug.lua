@@ -1,11 +1,5 @@
 local DEBUG = false
 
-function string.tohex(str)
-    return (str:gsub('.', function (c)
-        return string.format('%02X', string.byte(c))
-    end))
-end
-
 local function debug(...)
 	if not DEBUG then return end
 	print(...)
