@@ -56,17 +56,17 @@ function command.poll(event)
 		local cmd = command.Commands[ cmdStr:lower():sub(2) ]
 		if cmd then
 			if cmd.senpai and not user:isMaster() then
-				log.warn(("[COMMAND] %s: %s (PERMISSION DENIED)"):format(user.name, msg))
-				user:message("Permission denied: ".. cmd)
+				log.warn(("[COMMAND] %s: %s (PERMISSION DENIED)"):format(user:getName(), msg))
+				user:message("Permission denied: ".. cmdStr)
 			else
 				local suc, err = pcall(cmd.callback, user, cmdStr, args, msg)
 				if not suc then
-					log.error(("[COMMAND] %s: %s (%q)"):format(user.name, msg, err))
+					log.error(("[COMMAND] %s: %s (%q)"):format(user:getName(), msg, err))
 					user:message(("<b>%s</b> is currently <i>broken..</i>"):format(cmdStr))
 				end
 			end
 		else
-			log.info(("[COMMAND] %s: %s (Unknown Command)"):format(user.name, msg))
+			log.info(("[COMMAND] %s: %s (Unknown Command)"):format(user:getName(), msg))
 			user:message(("Unknown command: <b>%s</b>"):format(cmdStr))
 		end
 	end

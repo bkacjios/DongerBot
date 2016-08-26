@@ -3,33 +3,33 @@ afk = {}
 function afk.checkStats(event)
 	local user = event.user
 
-	local root = dongerbot:getChannel(".").name
+	local root = dongerbot:getChannel("."):getName()
 
 	local afkchannel = dongerbot:getChannel(config.afk.channel[root])
 
-	if user.name == "Amer" then
+	if user:getName() == "Amer" then
 		afkchannel = dongerbot:getChannels()[30] or afkchannel 
 	end
 
 	-- Ignore people in the AFK channel
-	if not afkchannel or user.channel == afkchannel then return end
+	if not afkchannel or user:getChannel() == afkchannel then return end
 
 	if event.idlesecs > (config.afk.movetime * 60) - (config.afk.warning * 60) then
 		if not user.warned then
 			local idletime = math.floor(event.idlesecs/60)
-			local message = config.afk.warningmessage:format(idletime, afkchannel.name, config.afk.movetime - idletime)
+			local message = config.afk.warningmessage:format(idletime, afkchannel:getName(), config.afk.movetime - idletime)
 			user:message(message)
 			user.warned = true
-			log.info(("[AFK] %s has been warned they are AFK"):format(user.name))
+			log.info(("[AFK] %s has been warned they are AFK"):format(user:getName()))
 		end
 	elseif user.warned then
 		user.warned = false
-		log.info(("[AFK] %s is no longer AFK"):format(user.name))
+		log.info(("[AFK] %s is no longer AFK"):format(user:getName()))
 	end
 
 	if event.idlesecs > config.afk.movetime * 60 then
 		user:move(afkchannel)
-		log.info(("[AFK] %s was moved to %s"):format(user.name, afkchannel.name))
+		log.info(("[AFK] %s was moved to %s"):format(user:getName(), afkchannel:getName()))
 	end
 end
 

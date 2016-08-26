@@ -35,7 +35,10 @@ end)
 
 dongerbot:hook("OnUserState", function(event)
 	debug("OnUserState", event)
-	--for k,v in pairs(dongerbot:getUsers()) do print(k,v) end
+end)
+
+dongerbot:hook("OnUserChangedChannel", function(event)
+	debug("OnUserChangedChannel", event)
 end)
 
 dongerbot:hook("OnMessage", function(event)

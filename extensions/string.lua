@@ -10,6 +10,12 @@ function string.AddCommas( str )
 	return tostring(str):reverse():gsub("(...)", "%1,"):gsub(",$", ""):reverse()
 end
 
+function string.tohex(str)
+    return (str:gsub('.', function (c)
+        return string.format('%02X', string.byte(c))
+    end))
+end
+
 local entityMap  = {
 	["lt"]		= "<",
 	["gt"]		= ">",
@@ -57,4 +63,14 @@ end
 
 function string.AOrAn( s )
 	return string.match( s, "^h?[AaEeIiOoUu]" ) and "an" or "a"
+end
+
+function string.longest(...)
+	local longest
+	for k,str in pairs({...}) do
+		if not longest or #longest < #str then
+			longest = str
+		end
+	end
+	return longest
 end

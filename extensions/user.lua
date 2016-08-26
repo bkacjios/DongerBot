@@ -1,6 +1,6 @@
 function mumble.user:isMaster()
 	-- Allow the superuser or masters to control the bot
-	return self.name == config.superuser or config.masters[self.hash]
+	return self:getName() == config.superuser or config.masters[self:getHash()]
 end
 
 function UserPairs(t)
@@ -9,7 +9,12 @@ function UserPairs(t)
 		table.insert(s, c)
 	end
 	table.sort(s, function(a,b)
-		return (a.id or 0) < (b.id or 0)
+		if a:getID() == b:getID() then
+			return a:getSession() < b:getSession()
+		elseif a:getID() <= 0 or b:getID() <= 0 then
+			return a:getID() > b:getID()
+		end
+		return a:getID() < b:getID()
 	end)
 	return pairs(s)
 end

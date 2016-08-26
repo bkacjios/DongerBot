@@ -53,15 +53,17 @@ command.Add( "sounds", function( ply, args )
 end, "List all the sounds available on the soundboard" )
 
 dongerbot:hook("OnMessage", "Soundboard Handler", function(event)
+	local actor = event.actor
+
 	local msg = event.message
 	if msg:sub(1,1) == "#" then
 		local name = msg:sub(2):lower()
 		if name == "reload" then
 			soundboard.reload()
-			log.info(("[SOUNDBOARD] %s: reloaded all sounds"):format(event.actor.name))
+			log.info(("[SOUNDBOARD] %s: reloaded all sounds"):format(actor:getName()))
 		elseif soundboard.issound(name) then
 			soundboard.playsound(name, true)
-			log.info(("[SOUNDBOARD] %s: #%s"):format(event.actor.name, name))
+			log.info(("[SOUNDBOARD] %s: #%s"):format(actor:getName(), name))
 		end
 	end
 end )

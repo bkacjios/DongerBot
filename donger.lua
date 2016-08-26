@@ -27,6 +27,7 @@ local function loop()
 
 			dongerbot:hook("OnError", function(err)
 				log.error(err)
+				print(debug.traceback())
 			end)
 
 			dongerbot:hook("OnUserRemove", function(event)
