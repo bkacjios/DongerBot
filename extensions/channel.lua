@@ -20,7 +20,7 @@ end]]
 
 function mumble.client:getUser(name)
 	for session, user in pairs(self:getUsers()) do
-		if user.name == name then
+		if user:getName() == name then
 			return user
 		end
 	end

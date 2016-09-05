@@ -42,6 +42,8 @@ function math.SecondsToHuman( sec, accuracy )
 	return table.concat( result, ", " )
 end
 
-function math.randombias(min, max, bias)
-	return math.floor(min + (max - min) * math.pow(math.random(), bias))
+function math.randombias(min, max, bias, influence)
+	local rnd = math.random() * (max - min) + min
+	local mix = math.random() * (influence or 1)
+	return rnd * (1 - mix) + bias * mix
 end

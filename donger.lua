@@ -4,8 +4,25 @@ require"log"
 
 math.randomseed(os.time())
 
+local bots = {
+	{
+		bot = nil,
+		host = "raspberrypi.lan",
+		port = 64738,
+		cert = "config/dongerbot.pem",
+		key = "config/dongerbot.key",
+	},
+	{
+		bot = nil,
+		host = "mbl27.gameservers.com",
+		port = 10004,
+		cert = "config/dongerbot.pem",
+		key = "config/dongerbot.key",
+	},
+}
+
 local function loop()
-	if not dongerbot  then
+	if not dongerbot then
 		dongerbot, err = mumble.connect("mbl27.gameservers.com", 10004, "config/dongerbot.pem", "config/dongerbot.key")
 		--dongerbot, err = mumble.connect("raspberrypi.lan", 64738, "config/dongerbot.pem", "config/dongerbot.key")
 
@@ -38,7 +55,7 @@ local function loop()
 			-- Failed to connect.. try again in 3
 			mumble.sleep(3)
 		end
-	elseif dongerbot and dongerbot:isConnected() then
+	elseif dongerbot:isConnected() then
 		dongerbot:update()
 	else
 		dongerbot = nil

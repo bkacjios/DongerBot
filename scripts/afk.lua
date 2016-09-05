@@ -14,9 +14,11 @@ function afk.checkStats(event)
 	-- Ignore people in the AFK channel
 	if not afkchannel or user:getChannel() == afkchannel then return end
 
-	if event.idlesecs > (config.afk.movetime * 60) - (config.afk.warning * 60) then
+	local idle = event.idlesecs or 0
+
+	if idle > (config.afk.movetime * 60) - (config.afk.warning * 60) then
 		if not user.warned then
-			local idletime = math.floor(event.idlesecs/60)
+			local idletime = math.floor(idle/60)
 			local message = config.afk.warningmessage:format(idletime, afkchannel:getName(), config.afk.movetime - idletime)
 			user:message(message)
 			user.warned = true
@@ -27,7 +29,7 @@ function afk.checkStats(event)
 		log.info(("[AFK] %s is no longer AFK"):format(user:getName()))
 	end
 
-	if event.idlesecs > config.afk.movetime * 60 then
+	if idle > config.afk.movetime * 60 then
 		user:move(afkchannel)
 		log.info(("[AFK] %s was moved to %s"):format(user:getName(), afkchannel:getName()))
 	end

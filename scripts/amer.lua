@@ -2,6 +2,7 @@ local https = require("ssl.https")
 local json = require("dkjson")
 
 amer = amer or {
+	in_game = false,
 	last_abandon = nil,
 	queue = {},
 	accounts = {
@@ -45,7 +46,9 @@ local quotes = {
 }
 
 function amer.checkGames(account)
-	local raw = https.request(("https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?account_id=%s&key=3E8739860EBA629CC6E322018EE45F6A"):format(account.account_id))
+	local raw, code = https.request(("https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?account_id=%s&key=3E8739860EBA629CC6E322018EE45F6A"):format(account.account_id))
+
+	if code ~= 200 then return end
 
 	local data = json.decode(raw)
 
@@ -76,12 +79,33 @@ function amer.checkAllAccountMatches()
 	end
 end
 
+concommand.Add("amer", function(cmd, args)
+	local infraction = amer.last_abandon
+	if infraction then
+		local cur_time = os.time()
+		local date = infraction.time
+		local time = math.SecondsToHuman(os.difftime(cur_time, infraction.time))
+		local time_left = math.SecondsToHuman(os.difftime(infraction.time + 604800, cur_time))
+		print(("MatchID: %s"):format(infraction.match_id))
+		print(("Played : %s ago"):format(time))
+		print(("Banned : %s left"):format(time_left))
+	end
+end, "Display amer debug information")
+
 dongerbot:hook("OnUserChannel", "Amer - Stop being drunk", function(event)
 	local user = event.user
 
-	local channel = dongerbot:getChannels()[30] or dongerbot:getChannels()[6]
-	
 	if user:getName() ~= "Amer" then return end
+
+	local channel = dongerbot:getChannels()[30] or dongerbot:getChannels()[6]
+
+	local hour = tonumber(os.date("%H"))
+	
+	if hour < 22 and hour > 9 then
+		channel = dongerbot:getChannels()[31]
+	end
+
+	if not channel then return end
 
 	local cur_time = os.time()
 
@@ -89,12 +113,12 @@ dongerbot:hook("OnUserChannel", "Amer - Stop being drunk", function(event)
 		user:move(channel)
 
 		local infraction = amer.last_abandon
-		local time = math.SecondsToHuman(os.difftime(cur_time, amer.last_abandon.time))
-		local time_left = math.SecondsToHuman(os.difftime(amer.last_abandon.time + 604800, cur_time))
+		local time = math.SecondsToHuman(os.difftime(cur_time, infraction.time))
+		local time_left = math.SecondsToHuman(os.difftime(infraction.time + 604800, cur_time))
 
 		user:message(([[Hello Amer.<br>
 It has come to my attention you have abandoned a game of Dota %s ago.<br>
-Because of this, you will be confined to this channel for %s.
+Because of this, you will be confined to this channel for %s, between the hours of 9AM and 9PM.
 <br>
 <b>Match ID:</b> <a href='http://www.dotabuff.com/matches/%s'>%s</a><br>
 <br>
@@ -104,11 +128,40 @@ Remeber, <i>“%s”</i>]]):format(time, time_left, infraction.match_id, infract
 	end
 end)
 
+local lastcheck
+
+dongerbot:hook("OnTick", "Amer - Check Right Channel", function()
+	local time = os.time()
+
+	if lastcheck and lastcheck + 1 > time then return end
+	lastcheck = time
+
+	local amer = dongerbot:getUser("Amer")
+	local hour = tonumber(os.date("%H"))
+
+	if not amer then return end
+
+	local channel = dongerbot:getChannels()[30] or dongerbot:getChannels()[6]
+	local hisChannel = amer:getChannel()
+
+	if not amer.in_game and hour < 22 and hour > 9 then
+		channel = dongerbot:getChannels()[31]
+	end
+
+	if not channel or hisChannel == channel then return end
+
+	amer:move(channel)
+end)
+
+local lastgamecheck
+
 dongerbot:hook("OnTick", "Amer - Check Match Details", function()
 	local pop = table.remove(amer.queue, 1)
 	if pop then
-		local raw = https.request(("https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=%s&key=3E8739860EBA629CC6E322018EE45F6A"):format(pop.match_id))
+		local raw, code = https.request(("https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=%s&key=3E8739860EBA629CC6E322018EE45F6A"):format(pop.match_id))
 	
+		if code ~= 200 then return end
+
 		local data = json.decode(raw)
 
 		if not data or not data.result or not data.result.players then return end
@@ -128,6 +181,32 @@ dongerbot:hook("OnTick", "Amer - Check Match Details", function()
 			end
 		end
 	end
+end)
+
+dongerbot:hook("OnTick", "Amer - Check in dota", function()
+	local time = os.time()
+
+	if lastgamecheck and lastgamecheck + 10 > time then return end
+	lastgamecheck = time
+
+	local raw, code = https.request("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=3E8739860EBA629CC6E322018EE45F6A&steamids=76561198302454736,76561197965490298")
+
+	if code ~= 200 then return end
+
+	local data = json.decode(raw)
+
+	if not data or not data.response or not data.response.players then return end
+
+	local players = data.response.players
+
+	for k,ply in pairs(players) do
+		if ply.gameid == "570" then
+			amer.in_game = true
+			return
+		end
+	end
+
+	amer.in_game = false
 end)
 
 dongerbot:hook("OnServerPing", "Amer - Check Games", function()
