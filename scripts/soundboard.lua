@@ -52,6 +52,19 @@ command.Add( "sounds", function( ply, args )
 	end
 end, "List all the sounds available on the soundboard" )
 
+--[[local target = mumble.voicetarget()
+target:setChannel(dongerbot:getChannel("."))
+target:setChildren(true)
+target:setLinks(true)
+dongerbot:registerVoiceTarget(1, target)
+
+local target = mumble.voicetarget()
+target:addUser(dongerbot:getUser("Bkacjios"))
+dongerbot:registerVoiceTarget(2, target)
+
+dongerbot:setVoiceTarget(1)
+dongerbot:play("soundboard/yes.ogg")]]
+
 dongerbot:hook("OnMessage", "Soundboard Handler", function(event)
 	local actor = event.actor
 
@@ -62,6 +75,12 @@ dongerbot:hook("OnMessage", "Soundboard Handler", function(event)
 			soundboard.reload()
 			log.info(("[SOUNDBOARD] %s: reloaded all sounds"):format(actor:getName()))
 		elseif soundboard.issound(name) then
+
+			local target = mumble.voicetarget()
+			target:setChannel(actor:getChannel())
+			dongerbot:registerVoiceTarget(1, target)
+
+			dongerbot:setVoiceTarget(1)
 			soundboard.playsound(name, true)
 			log.info(("[SOUNDBOARD] %s: #%s"):format(actor:getName(), name))
 		end

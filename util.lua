@@ -34,8 +34,6 @@ function include(f)
 	local succ, err = pcall(dofile, f)
 	if not succ then
 		log.error(("[INITIALIZE] %s"):format(err))
-	else
-		log.debug(("[INITIALIZE] %s"):format(f))
 	end
 end
 

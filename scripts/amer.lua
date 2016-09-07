@@ -82,12 +82,16 @@ end
 concommand.Add("amer", function(cmd, args)
 	local infraction = amer.last_abandon
 	if infraction then
-		local cur_time = os.time()
+		local time = os.time()
 		local date = infraction.time
-		local time = math.SecondsToHuman(os.difftime(cur_time, infraction.time))
-		local time_left = math.SecondsToHuman(os.difftime(infraction.time + 604800, cur_time))
+		local time_match = math.SecondsToHuman(os.difftime(time, infraction.time))
+		local time_left = math.SecondsToHuman(os.difftime(infraction.time + 604800, time))
+		if not amer.last_abandon or amer.last_abandon.time + 604800 < time then
+			time_left = "No time"
+		end
+		print("Amers last abandon")
 		print(("MatchID: %s"):format(infraction.match_id))
-		print(("Played : %s ago"):format(time))
+		print(("Played : %s ago"):format(time_match))
 		print(("Banned : %s left"):format(time_left))
 	end
 end, "Display amer debug information")
@@ -107,14 +111,14 @@ dongerbot:hook("OnUserChannel", "Amer - Stop being drunk", function(event)
 
 	if not channel then return end
 
-	local cur_time = os.time()
+	local time = os.time()
 
-	if amer.last_abandon and amer.last_abandon.time + 604800 >= cur_time then
+	if amer.last_abandon and amer.last_abandon.time + 604800 >= time then
 		user:move(channel)
 
 		local infraction = amer.last_abandon
-		local time = math.SecondsToHuman(os.difftime(cur_time, infraction.time))
-		local time_left = math.SecondsToHuman(os.difftime(infraction.time + 604800, cur_time))
+		local time_match = math.SecondsToHuman(os.difftime(time, infraction.time))
+		local time_left = math.SecondsToHuman(os.difftime(infraction.time + 604800, time))
 
 		user:message(([[Hello Amer.<br>
 It has come to my attention you have abandoned a game of Dota %s ago.<br>
@@ -124,7 +128,7 @@ Because of this, you will be confined to this channel for %s, between the hours 
 <br>
 If you abandon another game, you will be held for <i>another</i> <b>week.</b><br>
 <br>
-Remeber, <i>“%s”</i>]]):format(time, time_left, infraction.match_id, infraction.match_id, quotes[math.random(1,#quotes)]))
+Remeber, <i>“%s”</i>]]):format(time_match, time_left, infraction.match_id, infraction.match_id, quotes[math.random(1,#quotes)]))
 	end
 end)
 
@@ -150,10 +154,10 @@ dongerbot:hook("OnTick", "Amer - Check Right Channel", function()
 
 	if not channel or hisChannel == channel then return end
 
-	amer:move(channel)
+	if amer.last_abandon and amer.last_abandon.time + 604800 >= time then
+		amer:move(channel)
+	end
 end)
-
-local lastgamecheck
 
 dongerbot:hook("OnTick", "Amer - Check Match Details", function()
 	local pop = table.remove(amer.queue, 1)
@@ -183,8 +187,12 @@ dongerbot:hook("OnTick", "Amer - Check Match Details", function()
 	end
 end)
 
+local lastgamecheck
+
 dongerbot:hook("OnTick", "Amer - Check in dota", function()
 	local time = os.time()
+
+	if not amer.last_abandon or amer.last_abandon.time + 604800 < time then return end
 
 	if lastgamecheck and lastgamecheck + 10 > time then return end
 	lastgamecheck = time
