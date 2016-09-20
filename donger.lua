@@ -46,10 +46,9 @@ local function loop()
 				log.error(err)
 			end)
 
-			dongerbot:hook("OnUserRemove", function(event)
-				local user = event.user
-				if user ~= dongerbot.me then return end
-				log.warn(("%s from server (%q)"):format(event.ban and "Banned" or "Kicked", event.reason or "no reason"))
+			dongerbot:hook("OnUserRemove", "Self Disconnected", function(event)
+				if event.user ~= dongerbot.me then return end
+				log.warn(("%s from server (%s)"):format(event.ban and "Banned" or event.actor and "Kicked" or "Disconnected", event.reason or "no reason"))
 			end)
 		else
 			-- Failed to connect.. try again in 3
@@ -64,14 +63,14 @@ local function loop()
 	end
 end
 
-local evt = ev.IO.new( function()
+local evt = ev.IO.new(function()
 	xpcall(function()
 		concommand.run(io.read())
 	end, function(err) 
 		print(err)
 		print(debug.traceback())
 	end)
-end, 0, ev.READ )
+end, 0, ev.READ)
 evt:start( ev.Loop.default, false )
 
 local timer = ev.Timer.new(function()
@@ -79,8 +78,6 @@ local timer = ev.Timer.new(function()
 		print(err)
 		print(debug.traceback())
 	end)
-end, 0.01, 0.01 )
+end, 0.01, 0.01)
 timer:start( ev.Loop.default )
 ev.Loop.default:loop()
-
--- donger.lua:49: in main chunk

@@ -1,5 +1,7 @@
+local http  = require("socket.http")
+http.TIMEOUT = 1
 local https = require("ssl.https")
-local json = require("dkjson")
+local json  = require("dkjson")
 
 amer = amer or {
 	in_game = false,
@@ -64,11 +66,13 @@ function amer.checkGames(account)
 	account.last_match = last_game
 
 	for k,match in pairs(matches) do
-		-- Insert all matches that will need to be parsed into a stack
-		table.insert(amer.queue, {
-			match_id = match.match_id,
-			account_id = account.account_id,
-		})
+		if match.match_id ~= 2630939067 then
+			-- Insert all matches that will need to be parsed into a stack
+			table.insert(amer.queue, {
+				match_id = match.match_id,
+				account_id = account.account_id,
+			})
+		end
 	end
 end
 

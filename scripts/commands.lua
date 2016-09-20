@@ -21,14 +21,14 @@ command.Add("volume", function(ply, cmd, args)
 end, "Change the output volume of the bot")
 
 command.Add( "goto", function( ply, cmd, args )
-	local channel = dongerbot:getChannel(args[1])
+	local channel = dongerbot.me:getChannel()(args[1]) or dongerbot:getChannel(args[1])
 	local user = dongerbot:getUser(args[1])
 	if user then -- Default to a user
 		dongerbot.me:move(user:getChannel())
 		log.info(("[COMMAND] %s: sent me to %s"):format(ply:getName(), user:getName()))
 	elseif channel then -- Fallback on a channel name
 		dongerbot.me:move(channel)
-		log.info(("[COMMAND] %s: sent me to %s"):format(ply:getName(), user:getChannel():getName()))
+		log.info(("[COMMAND] %s: sent me to %s"):format(ply:getName(), channel:getName()))
 	else
 		ply:message("Unable to find a target to go to.")
 	end

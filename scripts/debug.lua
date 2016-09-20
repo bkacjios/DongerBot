@@ -5,6 +5,9 @@ local function debug(...)
 	print(...)
 end
 
+dongerbot:hook("OnTick", function()
+end)
+
 dongerbot:hook("OnServerVersion", function(event)
 	debug("OnServerVersion", event)
 end)
@@ -35,6 +38,10 @@ end)
 
 dongerbot:hook("OnUserRemove", function(event)
 	debug("OnUserRemove", event)
+end)
+
+dongerbot:hook("OnUserConnected", function(event)
+	debug("OnUserConnected", event)
 end)
 
 dongerbot:hook("OnUserState", function(event)
