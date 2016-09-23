@@ -19,7 +19,7 @@ function soundboard.reload()
 			end
 		end
 	end
-	log.info("[SOUNDBOARD] Loaded audio files..")
+	log.debug("[SOUNDBOARD] Loaded audio files..")
 end
 soundboard.reload()
 
@@ -73,7 +73,7 @@ dongerbot:hook("OnMessage", "Soundboard Handler", function(event)
 		local name = msg:sub(2):lower()
 		if name == "reload" then
 			soundboard.reload()
-			log.info(("[SOUNDBOARD] %s: reloaded all sounds"):format(actor:getName()))
+			log.debug(("[SOUNDBOARD] %s: reloaded all sounds"):format(actor:getName()))
 		elseif soundboard.issound(name) then
 
 			local target = mumble.voicetarget()
@@ -82,7 +82,7 @@ dongerbot:hook("OnMessage", "Soundboard Handler", function(event)
 
 			dongerbot:setVoiceTarget(1)
 			soundboard.playsound(name, true)
-			log.info(("[SOUNDBOARD] %s: #%s"):format(actor:getName(), name))
+			log.debug(("[SOUNDBOARD] %s: #%s"):format(actor:getName(), name))
 		end
 	end
 end )

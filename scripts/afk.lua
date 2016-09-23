@@ -18,18 +18,18 @@ function afk.checkStats(event)
 
 	if idle > config.afk.movetime * 60 then
 		user:move(afkchannel)
-		log.info(("[AFK] %s was moved to %s"):format(user:getName(), afkchannel:getName()))
+		log.debug(("[AFK] %s was moved to %s"):format(user:getName(), afkchannel:getName()))
 	elseif idle > (config.afk.movetime * 60) - (config.afk.warning * 60) then
 		if not user.warned then
 			local idletime = math.floor(idle/60)
 			local message = config.afk.warningmessage:format(idletime, afkchannel:getName(), config.afk.movetime - idletime)
 			user:message(message)
 			user.warned = true
-			log.info(("[AFK] %s has been warned they are AFK"):format(user:getName()))
+			log.debug(("[AFK] %s has been warned they are AFK"):format(user:getName()))
 		end
 	elseif user.warned then
 		user.warned = false
-		log.info(("[AFK] %s is no longer AFK"):format(user:getName()))
+		log.debug(("[AFK] %s is no longer AFK"):format(user:getName()))
 	end
 end
 

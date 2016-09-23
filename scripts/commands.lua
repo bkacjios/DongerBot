@@ -14,7 +14,7 @@ command.Add("volume", function(ply, cmd, args)
 		volume = tonumber(volume)/100
 		if not ply:isMaster() then volume = math.min(volume,1) end
 		dongerbot:setVolume(volume)
-		log.info(("[COMMAND] %s: changed the volume to %i"):format(ply:getName(), volume*100))
+		log.debug(("[COMMAND] %s: changed the volume to %i"):format(ply:getName(), volume*100))
 	else
 		ply:message(("Volume level: <b>%i</b>"):format(dongerbot:getVolume()*100))
 	end
@@ -25,10 +25,10 @@ command.Add( "goto", function( ply, cmd, args )
 	local user = dongerbot:getUser(args[1])
 	if user then -- Default to a user
 		dongerbot.me:move(user:getChannel())
-		log.info(("[COMMAND] %s: sent me to %s"):format(ply:getName(), user:getName()))
+		log.debug(("[COMMAND] %s: sent me to %s"):format(ply:getName(), user:getName()))
 	elseif channel then -- Fallback on a channel name
 		dongerbot.me:move(channel)
-		log.info(("[COMMAND] %s: sent me to %s"):format(ply:getName(), channel:getName()))
+		log.debug(("[COMMAND] %s: sent me to %s"):format(ply:getName(), channel:getName()))
 	else
 		ply:message("Unable to find a target to go to.")
 	end
@@ -42,7 +42,7 @@ command.Add( "summon", function( ply, cmd, args )
 		else
 			ply:message(("I'm comming %s!"):format(config.mastername))
 			dongerbot.me:move(ply:getChannel())
-			log.info(("[COMMAND] %s: summoned me to %s"):format(ply:getName(), ply:getChannel():getName()))
+			log.debug(("[COMMAND] %s: summoned me to %s"):format(ply:getName(), ply:getChannel():getName()))
 		end
 	else
 		local leashed, with = amIWithAMaster()
@@ -50,7 +50,7 @@ command.Add( "summon", function( ply, cmd, args )
 			ply:message(("I am already with my %s%s %s"):format(config.mastername, (#with>1 and "s: " or " "), table.concat(with, ", ")))
 		else
 			dongerbot.me:move(ply:getChannel())
-			log.info(("[COMMAND] %s: summoned me to %s"):format(ply:getName(), ply:getChannel():getName()))
+			log.debug(("[COMMAND] %s: summoned me to %s"):format(ply:getName(), ply:getChannel():getName()))
 		end
 	end
 end, "Make the bot come to the channel you are in" )
@@ -61,7 +61,7 @@ command.Add( "fuckoff", function( ply, cmd, args )
 		ply:message(("I won't leave my %s%s %s"):format(config.mastername, (#with>1 and "s: " or " "), table.concat(with, ", ")))
 	else
 		dongerbot.me:move(dongerbot:getChannel(config.home))
-		log.info(("[COMMAND] %s: told me to fuck off"):format(ply:getName()))
+		log.debug(("[COMMAND] %s: told me to fuck off"):format(ply:getName()))
 	end
 end, "Make the bot go to his channel" )
 
